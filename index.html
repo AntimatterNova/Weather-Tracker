@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" class="has-background-grey-light">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Watcher</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <section class="section">
+        <p class="title is-italic has-text-weight-bold">CLOUD WATCHER</p>
+        <div class="tile is-ancestor">
+            <div class="tile is-ancestor">
+                <div class="tile is-4 is-vertical is-parent">
+                  <div class="tile is-child box has-background-dark">
+                    <input class="input is-link" id="search" type="text" placeholder="Search for a City:">
+                    <button class="button is-link m-1" id="submitSearch">Submit</button>
+                  </div>
+                  <div class="tile is-child box has-background-dark" id="search-history-box">
+                    <p class="title has-text-light">Previous searches:</p>
+                  </div>
+                </div>
+                <div class="tile is-parent has-text-centered">
+                  <div class="tile is-child box has-background-dark">
+                    <p class="title has-text-light" id="curCity">Independence</p>
+
+                    <div class="tile is-child has-text-centered box has-background-grey-light">
+                        <p class="title" id="mainBox"></p>
+                        <div id="icon"></div>
+                        <ul>
+                            <li id="curTemp">Temp:</li>
+                            <li id="curWind">Wind:</li>
+                            <li id="curHumid">Humidity:</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="forecastCont">
+                        <div class="tile is-child has-text-centered box">
+                            <p class="title">DATE</p>
+                            <ul>
+                                <li>Temp:</li>
+                                <li>Wind:</li>
+                                <li>Humidity:</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+        </div>
+    </section>
+
+    <!-- a74f5b2196a4b1636be2b2efc00ce135 -->
+    <!-- http://api.openweathermap.org/data/2.5/forecast?id=524901&appid={API key} -->
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>
