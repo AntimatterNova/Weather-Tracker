@@ -10,6 +10,7 @@ var forecastCont = document.querySelector('#forecastCont');
 var data;
 var searchHistory = [];
 var hisBox = document.querySelector('#hisBox');
+var clrHistory = document.querySelector('#clrHistory');
 
 console.log(searchHistory.length);
 
@@ -110,7 +111,7 @@ function renderHistory(searchHistory) {
     console.log('renderHistory working. . .');
     for (var i = 0; i < searchHistory.length; i++) {
         var historyBtn = document.createElement('button');
-        historyBtn.setAttribute('class', 'button is-link');
+        historyBtn.setAttribute('class', 'button is-link m-1 is-12');
         historyBtn.textContent = searchHistory[i].name;
 
         historyBtn.addEventListener('click', (e) => {
@@ -122,7 +123,6 @@ function renderHistory(searchHistory) {
             renderWeather(submitInput);
         });
 
-        // iteration.push(i);
         historyBox.append(historyBtn);
         console.log(searchHistory[i].name);
     };
