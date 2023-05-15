@@ -1,13 +1,17 @@
 var searchInput = document.querySelector('#search');
 var submitBtn = document.querySelector('#submitSearch');
-var historyBox = document.querySelector('#search-history-box');
+var historyBox = document.querySelector('#history');
 var curCity = document.querySelector('#curCity');
 var curIcon = document.querySelector('#icon');
-var curTemp = document.querySelector('#curTemp');
+var curTempBox = document.querySelector('#curTemp');
 var curWind = document.querySelector('#curWind');
 var curHumid = document.querySelector('#curHumid');
 var forecastCont = document.querySelector('#forecastCont');
 var data;
+var searchHistory = [];
+var hisBox = document.querySelector('#hisBox');
+
+console.log(searchHistory.length);
 
 function renderWeather (city) {
     var weatherSearch = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&appid=a74f5b2196a4b1636be2b2efc00ce135&units=imperial'
@@ -19,53 +23,118 @@ function renderWeather (city) {
         return res.json();
         })
         .then(function (data) {
-
+            curCity.textContent = city;
+            //this for loop cycles through five days worth of forecasts
             for (var i = 0; i < data.list.length; i += 7) {
-                var mainData = data.list[i].main;
+                var mainData = data.list[i];
                 var weatherData = data.list[i].weather[0];
-
+                
                 createWeatherCard(mainData, weatherData);
             };
+            
+            curCity.textContent = city;
             console.log(data.list[0]);
         })
         .catch(function (error) {
             console.error(error);
         });
-
+        
 };
+    
+function createWeatherCard (mainData, weatherData) { 
+    function dateSplit () {
+        var roughDate = mainData.dt_txt.split(' ');
+        date = roughDate[0];
+    };
 
-function createWeatherCard (mainData, weatherData) {
+    dateSplit();
+
+    console.log(date);
     var icon = weatherData.icon;
-    var date = mainData.dt_text;
-    var tempNum = mainData.temp;
+    var tempNum = mainData.main.temp;
+    var windNum = mainData.wind.speed;
+    var humNum = mainData.main.humidity;
 
     var cardEl = document.createElement('div');
-    cardEl.setAttribute('class', 'tile is-child has-text-centered box');
+    cardEl.setAttribute('class', 'tile is-child box has-background-grey-light');
+    cardEl.setAttribute('id', 'weatherBox');
     
     var title = document.createElement('p');
     title.setAttribute('class', 'title');
     title.textContent = date;
 
+    var imgEl = document.createElement('img');
+    imgEl.setAttribute('src', "https://openweathermap.org/img/wn/" + mainData.weather[0].icon + "@2x.png");
+    imgEl.setAttribute('alt', 'weather icon');
+
     var conditions = document.createElement('ul');
 
-    var temp = document.createElement('li');
-    temp.textContent = `Temp: ${tempNum}`;
+    var tempEl = document.createElement('li');
+    tempEl.setAttribute('class', 'has-text-link has-text-weight-bold');
+    tempEl.textContent = `Temp: ${tempNum}°F`;
 
-    var wind = document.createElement('li');
-    wind.textContent = 'Wind:';
+    var windEl = document.createElement('li');
+    windEl.setAttribute('class', 'has-text-link has-text-weight-bold');
+    windEl.textContent = `Wind: ${windNum}mph`;
 
-    var humidity = document.createElement('li');
-    humidity.textContent = 'Humidity:'
+    var humEl = document.createElement('li');
+    humEl.setAttribute('class', 'has-text-link has-text-weight-bold');
+    humEl.textContent = `Humidity: ${humNum}%`;
 
-    conditions.append(temp, wind, humidity);
-    cardEl.append(title, conditions);
+    conditions.append(tempEl, windEl, humEl);
+    cardEl.append(title, imgEl, conditions);
     forecastCont.append(cardEl);
 };
 
 submitBtn.addEventListener('click', (e) => {
-    e.preventDefault()
+    e.preventDefault();
     submitInput = document.querySelector('#search').value
+    
+    if (submitInput === '') {
+        return
+    };
+    
     console.log(submitInput);
     renderWeather(submitInput)
-    document.querySelector('#search').value = ''
+    document.querySelector('#search').value = '';
+
+    var storeName = {
+        name: submitInput,
+    };
+
+    searchHistory.push(storeName);
+    window.localStorage.setItem('name', JSON.stringify(searchHistory));
 });
+
+function renderHistory(searchHistory) {
+    console.log('renderHistory working. . .');
+    for (var i = 0; i < searchHistory.length; i++) {
+        var historyBtn = document.createElement('button');
+        historyBtn.setAttribute('class', 'button is-link');
+        historyBtn.textContent = searchHistory[i].name;
+
+        historyBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            console.log(e);
+        
+            var submitInput = e.target.textContent;
+            renderWeather(submitInput);
+        });
+
+        // iteration.push(i);
+        historyBox.append(historyBtn);
+        console.log(searchHistory[i].name);
+    };
+};
+
+function init() {
+    searchHistory = JSON.parse(localStorage.getItem('name'));
+
+    if (searchHistory === null) {
+        searchHistory = [];
+    };
+    renderHistory(searchHistory);
+};
+
+init();
