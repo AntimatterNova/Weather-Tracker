@@ -1,5 +1,5 @@
 # Project Description
-This is a lite web application which allows you to search up the current weather and five day forecast for you're local area. Ths application also saves previous searches in your browser's local storage.
+This is a lite web application which allows you to search up the current weather and five day forecast for you're local area. This application also saves previous searches in your browser's local storage, and presents them as clickable button.
 
 ## Page Preview
 This is what the page should look like when launched properly, or viewed on a web browser.
